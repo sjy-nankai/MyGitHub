@@ -10,4 +10,5 @@ sealed class BottomNaviItem(val title: String, val icon: ImageVector, val route:
     data object Home : BottomNaviItem("Home", Icons.Default.Home, "Home")
     data object Search : BottomNaviItem("Search", Icons.Default.Search, "Search")
     data object Profile : BottomNaviItem("Profile", Icons.Default.Person, "Profile")
+    data object Repositories : BottomNaviItem("Repos", Icons.Default.Person, "Repos")
 }

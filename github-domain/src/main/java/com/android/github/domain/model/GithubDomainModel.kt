@@ -1,7 +1,5 @@
 package com.android.github.domain.model
 
-import com.google.gson.annotations.SerializedName
-
 data class User(
     val username: String,
     val name: String?,
@@ -10,35 +8,6 @@ data class User(
     val repoCount: Int,
     val followers: Int,
     val following: Int
-)
-
-data class Repo(
-    val name: String,
-    val fullName: String,
-    val description: String?,
-    val stars: Int,
-    val forks: Int,
-    val language: String?
-)
-
-data class TokenResponse(
-    @SerializedName("access_token")
-    val accessToken: String,
-    @SerializedName("token_type")
-    val tokenType: String,
-    @SerializedName("scope")
-    val scope: String
-)
-
-
-data class PopularRepo(
-    val name: String,
-    val fullName: String,
-    val description: String?,
-    val stars: Int,
-    val forks: Int,
-    val language: String?,
-    val owner: RepoOwner
 )
 
 data class SearchResult(
@@ -65,11 +34,6 @@ data class RepositoryOwner(
     val avatarUrl: String
 )
 
-data class RepoOwner(
-    val login: String,
-    val avatarUrl: String
-)
-
 sealed class AuthState {
     data object Anonymous : AuthState()
     data class Authenticated(val user: User, val token: String) : AuthState()
@@ -90,7 +54,6 @@ data class CreateIssueRequest(
     val body: String,
     val labels: List<String> = emptyList()
 )
-
 
 data class AuthToken(
     val accessToken: String,

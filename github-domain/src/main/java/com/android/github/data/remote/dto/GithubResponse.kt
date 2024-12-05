@@ -3,73 +3,68 @@ package com.android.github.data.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class UserDto(
+    @SerializedName("login")
     val login: String,
-    val avatar_url: String,
+    @SerializedName("avatar_url")
+    val avatarUrl: String,
+    @SerializedName("name")
     val name: String?,
+    @SerializedName("bio")
     val bio: String?,
-    val public_repos: Int,
+    @SerializedName("public_repos")
+    val publicRepos: Int,
+    @SerializedName("followers")
     val followers: Int,
+    @SerializedName("following")
     val following: Int
 )
 
-data class RepoDto(
-    val name: String,
-    val full_name: String,
-    val description: String?,
-    val stargazers_count: Int,
-    val forks_count: Int,
-    val language: String?
-)
-
-data class SearchRepoResponse(
-    val total_count: Int,
-    val incomplete_results: Boolean,
-    val items: List<PopularRepoDto>
-)
-
-data class PopularRepoDto(
-    val name: String,
-    val full_name: String,
-    val description: String?,
-    val stargazers_count: Int,
-    val forks_count: Int,
-    val language: String?,
-    val owner: RepoOwnerDto
-)
-
-data class RepoOwnerDto(
-    val login: String,
-    val avatar_url: String
-)
-
 data class AuthTokenDto(
-    val access_token: String,
-    val token_type: String,
+    @SerializedName("access_token")
+    val accessToken: String,
+    @SerializedName("token_type")
+    val tokenType: String,
+    @SerializedName("scope")
     val scope: String
 )
 
-data class SearchResponseDto(
-    val total_count: Int,
-    val incomplete_results: Boolean,
+data class SearchResultDto(
+    @SerializedName("total_count")
+    val totalCount: Int,
+    @SerializedName("incomplete_results")
+    val incompleteResults: Boolean,
+    @SerializedName("items")
     val items: List<RepositoryDto>
 )
 
 data class RepositoryDto(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
-    val full_name: String,
+    @SerializedName("full_name")
+    val fullName: String,
+    @SerializedName("description")
     val description: String?,
+    @SerializedName("language")
     val language: String?,
-    val stargazers_count: Int,
-    val forks_count: Int,
+    @SerializedName("stargazers_count")
+    val stargazersCount: Int,
+    @SerializedName("forks_count")
+    val forksCount: Int,
+    @SerializedName("owner")
     val owner: RepositoryOwnerDto,
-    val updated_at: String
+    @SerializedName("updated_at")
+    val updatedAt: String
 )
 
 data class RepositoryOwnerDto(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("login")
     val login: String,
-    val avatar_url: String
+    @SerializedName("avatar_url")
+    val avatarUrl: String
 )
 
 data class IssueDto(

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.android.mygithub.ui.screen.MainScreen
 import com.android.mygithub.ui.screen.ProfileScreen
+import com.android.mygithub.ui.screen.RepositoriesScreen
 import com.android.mygithub.ui.screen.SearchScreen
 
 @Composable
@@ -27,7 +28,15 @@ fun NavigationGraph(
         }
 
         composable(BottomNaviItem.Profile.route) {
-            ProfileScreen(paddingValues)
+            ProfileScreen(
+                paddingValues,
+                { navController.navigate(route = BottomNaviItem.Repositories.route) })
+        }
+
+        composable(BottomNaviItem.Repositories.route) {
+            RepositoriesScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

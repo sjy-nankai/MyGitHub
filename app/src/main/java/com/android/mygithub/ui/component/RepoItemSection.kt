@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.android.github.domain.model.Repository
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -42,9 +41,8 @@ fun RepositoryItem(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AsyncImage(
-                    model = repository.owner.avatarUrl,
-                    contentDescription = "Owner avatar",
+                AvatarLogo(
+                    url = repository.owner.avatarUrl,
                     modifier = Modifier
                         .size(24.dp)
                         .clip(CircleShape)
@@ -146,15 +144,19 @@ private fun formatNumber(number: Int): String {
 }
 
 private fun formatUpdateTime(isoDateTime: String): String {
-    val instant = Instant.parse(isoDateTime)
-    val now = Instant.now()
-    val days = ChronoUnit.DAYS.between(instant, now)
+    try {
+        val instant = Instant.parse(isoDateTime)
+        val now = Instant.now()
+        val days = ChronoUnit.DAYS.between(instant, now)
 
-    return when {
-        days == 0L -> "today"
-        days == 1L -> "yesterday"
-        days < 30L -> "$days days ago"
-        days < 365L -> "${days / 30} months ago"
-        else -> "${days / 365} years ago"
+        return when {
+            days == 0L -> "today"
+            days == 1L -> "yesterday"
+            days < 30L -> "$days days ago"
+            days < 365L -> "${days / 30} months ago"
+            else -> "${days / 365} years ago"
+        }
+    } catch (e: Exception) {
+        return ""
     }
 }

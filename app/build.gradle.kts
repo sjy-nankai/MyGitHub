@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(project(":github-domain"))
     testImplementation(libs.junit)
+    testImplementation(libs.bundles.kotest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

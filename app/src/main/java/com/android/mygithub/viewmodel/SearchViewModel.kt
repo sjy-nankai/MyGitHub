@@ -1,10 +1,14 @@
 package com.android.mygithub.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.github.data.remote.di.AppModule
+import com.android.github.data.remote.di.ApiModule
 import com.android.github.domain.model.Repository
 import com.android.github.domain.usecase.GithubUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +18,7 @@ import kotlinx.coroutines.launch
 
 data class SearchState(
     val query: String = "",
-    val selectedLanguage: String? = null,
+    val selectedLanguage: String? = "default",
     val isLoading: Boolean = false,
     val repositories: List<Repository> = emptyList(),
     val currentPage: Int = 1,
@@ -23,12 +27,16 @@ data class SearchState(
 )
 
 class SearchViewModel(
-    private val useCase: GithubUseCase = GithubUseCase(repository = AppModule.repository)
+    private val useCase: GithubUseCase = GithubUseCase(repository = ApiModule.repository),
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
 
     private var searchJob: Job? = null
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e("my-github", exception.toString())
+    }
 
     fun onQueryChange(query: String) {
         _state.value = _state.value.copy(query = query)
@@ -50,7 +58,7 @@ class SearchViewModel(
     }
 
     private fun search(resetPage: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             val currentState = _state.value
             val page = if (resetPage) 1 else currentState.currentPage + 1
 

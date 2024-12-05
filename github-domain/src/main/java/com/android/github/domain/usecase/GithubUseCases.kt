@@ -1,23 +1,20 @@
 package com.android.github.domain.usecase
 
 import com.android.github.domain.model.AuthUser
-import com.android.github.domain.model.PopularRepo
-import com.android.github.domain.model.Repo
+import com.android.github.domain.model.Repository
 import com.android.github.domain.model.SearchResult
 import com.android.github.domain.model.User
 import com.android.github.domain.repository.GithubRepository
 
 class GithubUseCase(private val repository: GithubRepository) {
-    suspend fun getUser(username: String): Result<User> =
-        repository.getUser(username)
 
-    suspend fun getUserRepos(username: String): Result<List<Repo>> =
-        repository.getUserRepos(username)
+    suspend fun getAuthenticatedUserRepos(username: String): Result<List<Repository>> =
+        repository.getAuthenticatedUserRepos(username)
 
     suspend fun getPopularRepos(
         language: String? = null,
         since: String = "daily"
-    ): Result<List<PopularRepo>> =
+    ): Result<List<Repository>> =
         repository.getPopularRepos(language, since)
 
     suspend fun getAuthenticatedUser(

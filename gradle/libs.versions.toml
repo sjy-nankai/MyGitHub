@@ -17,6 +17,7 @@ coil = "2.7.0"
 coroutines_version = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+kotest = "5.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,16 @@ browser = { module = "androidx.browser:browser", version = "1.8.0" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.1.1" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+mockk = { module = "io.mockk:mockk", version = "1.13.9" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version = "2.2.0" }
+
+kotest-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-runner-android = { module = "io.kotest:kotest-runner-android", version.ref = "kotest" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -57,3 +68,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
+[bundles]
+kotest = ["kotest-junit", "kotest-assertions-core", "kotest-framework-engine", "kotest-property", "kotest-runner-android"]

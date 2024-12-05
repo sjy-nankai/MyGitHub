@@ -35,6 +35,7 @@ import com.android.mygithub.viewmodel.ProfileViewModel
 @Composable
 fun ProfileScreen(
     paddingValues: PaddingValues,
+    onRepositoriesClick: () -> Unit,
     viewModel: ProfileViewModel = viewModel(),
 ) {
     val refreshState = rememberPullToRefreshState()
@@ -75,6 +76,9 @@ fun ProfileScreen(
                     AuthenticatedProfileView(
                         user = state.user,
                         onLogoutClick = { viewModel.signOut(context) },
+                        onRepositoriesClick = {
+                            onRepositoriesClick.invoke()
+                        }
                     )
                 }
 

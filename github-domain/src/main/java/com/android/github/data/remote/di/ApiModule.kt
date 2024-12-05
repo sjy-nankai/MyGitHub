@@ -8,14 +8,14 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object AppModule {
+object ApiModule {
 
-    private val BASE_URL = "https://api.github.com"
-    private val AUTH_URL = "https://github.com"
+    private const val BASE_URL = "https://api.github.com"
+    private const val AUTH_URL = "https://github.com"
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Accept", "application/vnd.github.v3+json")
+                .addHeader("Accept", "application/vnd.github+json")
                 .build()
             chain.proceed(request)
         }
@@ -36,7 +36,6 @@ object AppModule {
     private val api: GithubApi = retrofit.create(GithubApi::class.java)
 
     private val authApi: GithubAuthApi = authRetrofit.create(GithubAuthApi::class.java)
-
 
     val repository: GithubRepository =
         GithubRepositoryImpl(

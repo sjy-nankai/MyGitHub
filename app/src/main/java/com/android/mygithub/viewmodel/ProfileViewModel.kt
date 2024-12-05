@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.github.data.remote.di.AppModule
+import com.android.github.data.remote.di.ApiModule
 import com.android.github.domain.model.AuthState
 import com.android.github.domain.model.User
 import com.android.github.domain.usecase.GithubUseCase
 import com.android.github.utils.AuthPreferences
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +23,8 @@ data class ProfileUiState(
 )
 
 class ProfileViewModel(
-    private val useCase: GithubUseCase = GithubUseCase(repository = AppModule.repository)
+    private val useCase: GithubUseCase = GithubUseCase(repository = ApiModule.repository),
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(ProfileUiState())
@@ -35,7 +38,7 @@ class ProfileViewModel(
     fun getAuthState(context: Context) {
         val token = AuthPreferences.getAccessToken(context)
         val code = AuthPreferences.getAccessCode(context)
-        viewModelScope.launch(coroutineExceptionHandler) {
+        viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             if (token !== null) {
                 useCase.getAuthenticatedUser(token).onSuccess { user ->
                     updateUserState(user, token)
@@ -82,7 +85,7 @@ class ProfileViewModel(
 
 
     fun signOut(context: Context) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             AuthPreferences.clearAuth(context)
             _uiState.update { state ->
                 state.copy(

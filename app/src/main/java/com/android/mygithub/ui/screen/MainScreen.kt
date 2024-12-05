@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.mygithub.ui.component.MyTopBar
-import com.android.mygithub.ui.component.PopularRepoSection
+import com.android.mygithub.ui.component.RepositoryItem
 import com.android.mygithub.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,20 +92,18 @@ fun MainScreen(
 
                 else -> {
                     LazyColumn(
-                        modifier = Modifier.padding(bottom = 80.dp)
+                        modifier = Modifier.padding(bottom = 80.dp),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(
-                            count = uiState.data?.size ?: 0,
-                            key = { uiState.data?.get(it)?.name + uiState.data?.get(it)?.description },
+                            count = uiState.data.size,
+                            key = { uiState.data[it].id },
                             contentType = { "popular-item" },
                         ) {
-                            PopularRepoSection(
-                                author = uiState.data?.get(it)?.owner?.login ?: "",
-                                avatarUrl = uiState.data?.get(it)?.owner?.avatarUrl,
-                                fullName = uiState.data?.get(it)?.fullName ?: "",
-                                description = uiState.data?.get(it)?.description ?: "",
-                                stars = "2",
-                                language = null,
+                            RepositoryItem(
+                                uiState.data[it],
+                                modifier = Modifier.padding()
                             )
                         }
                     }
