@@ -20,6 +20,11 @@ class GithubUseCase(private val repository: GithubRepository) {
     ): Result<List<PopularRepo>> =
         repository.getPopularRepos(language, since)
 
+    suspend fun getAuthenticatedUser(
+        token: String
+    ): Result<User> =
+        repository.getAuthenticatedUser(token)
+
 
     suspend fun login(code: String): Result<AuthUser> =
         repository.login(code)

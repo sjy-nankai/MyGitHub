@@ -90,8 +90,8 @@ class MainActivity : ComponentActivity() {
                 if (uri.scheme == "mygithub" && uri.host == "oauth") {
                     val code = uri.getQueryParameter("code") ?: ""
                     scope.launch {
-//                        AuthPreferences.saveAccessCode(context, code)
-                        AuthPreferences.code = code
+                        AuthPreferences.saveAccessCode(context, code)
+//                        AuthPreferences.code = code
                     }
                 }
             }

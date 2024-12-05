@@ -29,6 +29,9 @@ interface GithubRepository {
         page: Int = 1,
         perPage: Int = 30
     ): Result<SearchResult>
+
+    suspend fun getAuthenticatedUser(token: String?): Result<User>
+
     suspend fun getAuthState(token: String?): AuthState
     suspend fun signOut()
     suspend fun createIssue(owner: String, repo: String, issue: CreateIssueRequest): Result<Issue>

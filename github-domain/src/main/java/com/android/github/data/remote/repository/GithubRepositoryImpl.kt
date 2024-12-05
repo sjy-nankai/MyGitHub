@@ -80,6 +80,10 @@ class GithubRepositoryImpl(
         ).toDomain(page, perPage)
     }
 
+    override suspend fun getAuthenticatedUser(token: String?): Result<User> = runCatching {
+        api.getAuthenticatedUser("Bearer $token").toDomain()
+    }
+
 
     override suspend fun getAuthState(token: String?): AuthState {
         return if (token != null) {

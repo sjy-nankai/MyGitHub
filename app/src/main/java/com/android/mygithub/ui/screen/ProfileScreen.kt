@@ -70,12 +70,14 @@ fun ProfileScreen(
                         },
                     )
                 }
+
                 is AuthState.Authenticated -> {
                     AuthenticatedProfileView(
                         user = state.user,
-                        onLogoutClick = viewModel::signOut,
+                        onLogoutClick = { viewModel.signOut(context) },
                     )
                 }
+
                 null -> {
 
                 }

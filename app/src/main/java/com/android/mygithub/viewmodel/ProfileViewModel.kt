@@ -33,56 +33,57 @@ class ProfileViewModel(
     }
 
     fun getAuthState(context: Context) {
-
+        val token = AuthPreferences.getAccessToken(context)
+        val code = AuthPreferences.getAccessCode(context)
         viewModelScope.launch(coroutineExceptionHandler) {
-            AuthPreferences.code.let {
-                if (it.isNotEmpty()) {
-                    useCase.login(it).onSuccess { authUser ->
-//                        AuthPreferences.removeAccessCode(context)
-                        _uiState.update { state ->
-                            state.copy(
-                                authState = AuthState.Authenticated(
-                                    User(
-                                        username = authUser.user.username,
-                                        name = authUser.user.name,
-                                        avatarUrl = authUser.user.avatarUrl,
-                                        bio = authUser.user.bio,
-                                        repoCount = authUser.user.repoCount,
-                                        followers = authUser.user.followers,
-                                        following = authUser.user.following,
-                                    ), authUser.token.accessToken
-                                )
-                            )
-                        }
-                    }.onFailure {
-                        _uiState.update { state ->
-                            state.copy(
-                                isError = true
-                            )
-                        }
-                    }
-
-                } else {
+            if (token !== null) {
+                useCase.getAuthenticatedUser(token).onSuccess { user ->
+                    updateUserState(user, token)
+                }
+            } else if (code != null) {
+                useCase.login(code).onSuccess { authUser ->
+                    AuthPreferences.saveAccessToken(context, authUser.token.accessToken)
+                    updateUserState(authUser.user, authUser.token.accessToken)
+                }.onFailure {
                     _uiState.update { state ->
                         state.copy(
-                            authState = AuthState.Anonymous
+                            isError = true
                         )
                     }
+                }
 
+            } else {
+                _uiState.update { state ->
+                    state.copy(
+                        authState = AuthState.Anonymous
+                    )
                 }
             }
         }
     }
 
-
-    fun signIn() {
-        viewModelScope.launch {
-            AuthPreferences.code = ""
+    private fun updateUserState(user: User, token: String) {
+        _uiState.update { state ->
+            state.copy(
+                authState = AuthState.Authenticated(
+                    User(
+                        username = user.username,
+                        name = user.name,
+                        avatarUrl = user.avatarUrl,
+                        bio = user.bio,
+                        repoCount = user.repoCount,
+                        followers = user.followers,
+                        following = user.following,
+                    ), token
+                )
+            )
         }
     }
 
-    fun signOut() {
+
+    fun signOut(context: Context) {
         viewModelScope.launch {
+            AuthPreferences.clearAuth(context)
             _uiState.update { state ->
                 state.copy(
                     authState = AuthState.Anonymous
