@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyGitHub"
 include(":app")
- 
+include(":github-domain")

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.js.inline.util.getSimpleName
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.android.mygithub"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.android.mygithub"
@@ -49,6 +51,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.compose.material.icons.core)
+    implementation(libs.compose.material.icons.extended)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.convert.gson)
+    implementation(libs.gson)
+    implementation(libs.viewmodel)
+    implementation(libs.viewmodel.compose)
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
+    implementation(libs.browser)
+    implementation(libs.datastore.preferences)
+    implementation(project(":github-domain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
