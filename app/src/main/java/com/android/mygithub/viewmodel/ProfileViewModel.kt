@@ -83,7 +83,6 @@ class ProfileViewModel(
         }
     }
 
-
     fun signOut(context: Context) {
         viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             AuthPreferences.clearAuth(context)

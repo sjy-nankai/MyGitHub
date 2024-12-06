@@ -14,19 +14,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class MainUiState(
+data class PopularUiState(
     val isRefreshing: Boolean = false,
     val isError: Boolean = false,
     val data: List<Repository> = emptyList(),
 )
 
-class MainViewModel(
+class PopularViewModel(
     private val useCase: GithubUseCase = GithubUseCase(repository = ApiModule.repository),
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
-    private var _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState>
+    private var _uiState: MutableStateFlow<PopularUiState> = MutableStateFlow(PopularUiState())
+    val uiState: StateFlow<PopularUiState>
         get() = _uiState
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         Log.e("my-github", exception.toString())

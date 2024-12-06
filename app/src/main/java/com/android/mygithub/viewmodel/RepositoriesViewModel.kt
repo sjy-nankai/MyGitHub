@@ -24,11 +24,10 @@ class RepositoriesViewModel(
 
     fun loadRepositories(context: Context) {
         viewModelScope.launch(dispatcher) {
-            val token = AuthPreferences.getAccessToken(context)
+            val token = AuthPreferences.getAccessToken(context) ?: ""
             try {
-                useCase.getAuthenticatedUserRepos(token ?: "").onSuccess { repos ->
+                useCase.getAuthenticatedUserRepos(token).onSuccess { repos ->
                     _repositories.value = RepositoriesResult.Success(repos)
-
                 }
             } catch (e: Exception) {
                 _repositories.value = RepositoriesResult.Error(e.message ?: "Unknown error")

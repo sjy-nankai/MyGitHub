@@ -52,11 +52,6 @@ class SearchViewModel(
         search(resetPage = true)
     }
 
-    fun loadNextPage() {
-        if (_state.value.isLoading || !_state.value.hasNextPage) return
-        search(resetPage = false)
-    }
-
     private fun search(resetPage: Boolean) {
         viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             val currentState = _state.value

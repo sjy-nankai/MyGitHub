@@ -15,20 +15,12 @@ import retrofit2.http.Query
 interface GithubApi {
 
     @GET("search/repositories")
-    suspend fun getPopularRepos(
+    suspend fun searchRepositories(
         @Query("q") query: String,
         @Query("sort") sort: String = "stars",
         @Query("order") order: String = "desc",
-        @Query("per_page") perPage: Int = 30
-    ): SearchResultDto
-
-    @GET("search/repositories")
-    suspend fun searchRepositories(
-        @Query("q") query: String,
-        @Query("sort") sort: String,
-        @Query("order") order: String,
-        @Query("page") page: Int,
-        @Query("per_page") perPage: Int
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 30,
     ): SearchResultDto
 
     @GET("user")

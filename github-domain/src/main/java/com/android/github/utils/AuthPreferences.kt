@@ -12,9 +12,7 @@ object AuthPreferences {
     private val Context.dataStore by preferencesDataStore(name = "auth")
 
     private val ACCESS_CODE = stringPreferencesKey("access_code")
-    private val ACCESS_TOKEN = stringPreferencesKey("access_TOKEN")
-
-    var code = ""
+    private val ACCESS_TOKEN = stringPreferencesKey("access_token")
 
     suspend fun saveAccessToken(context: Context, token: String) {
         context.dataStore.edit { preferences ->
@@ -42,9 +40,9 @@ object AuthPreferences {
     }
 
     fun getAccessCodeFlow(context: Context) =
-            context.dataStore.data.map { preferences ->
-                preferences[ACCESS_CODE]
-            }
+        context.dataStore.data.map { preferences ->
+            preferences[ACCESS_CODE]
+        }
 
     fun getAccessCode(context: Context): String? =
         runBlocking {

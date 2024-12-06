@@ -13,7 +13,7 @@ class GithubUseCase(private val repository: GithubRepository) {
 
     suspend fun getPopularRepos(
         language: String? = null,
-        since: String = "daily"
+        since: String = "weekly"
     ): Result<List<Repository>> =
         repository.getPopularRepos(language, since)
 

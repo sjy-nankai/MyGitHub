@@ -28,13 +28,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.mygithub.ui.component.MyTopBar
 import com.android.mygithub.ui.component.RepositoryItem
-import com.android.mygithub.viewmodel.MainViewModel
+import com.android.mygithub.viewmodel.PopularViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
+fun PopularScreen(
     paddingValues: PaddingValues,
-    viewModel: MainViewModel = viewModel(),
+    viewModel: PopularViewModel = viewModel(),
 ) {
     val refreshState = rememberPullToRefreshState()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,7 +55,7 @@ fun MainScreen(
             .nestedScroll(refreshState.nestedScrollConnection),
         topBar = {
             MyTopBar(
-                title = "Home",
+                title = "Popular",
                 paddingValues = paddingValues,
             )
         }

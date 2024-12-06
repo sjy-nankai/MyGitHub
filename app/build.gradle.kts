@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(project(":github-domain"))
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
     testImplementation(libs.bundles.kotest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +73,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }

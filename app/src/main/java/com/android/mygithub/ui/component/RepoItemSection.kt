@@ -36,7 +36,6 @@ fun RepositoryItem(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Repository Owner Row
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -57,14 +56,12 @@ fun RepositoryItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Repository Name
             Text(
                 text = repository.name,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
 
-            // Description
             repository.description?.let { description ->
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -78,12 +75,10 @@ fun RepositoryItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Stats Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Language
                 repository.language?.let { language ->
                     RepositoryTag(
                         icon = "🔵",
@@ -91,19 +86,16 @@ fun RepositoryItem(
                     )
                 }
 
-                // Stars
                 RepositoryTag(
                     icon = "⭐",
                     text = formatNumber(repository.starCount)
                 )
 
-                // Forks
                 RepositoryTag(
                     icon = "🍴",
                     text = formatNumber(repository.forkCount)
                 )
 
-                // Updated time
                 Text(
                     text = formatUpdateTime(repository.updatedAt),
                     style = MaterialTheme.typography.bodySmall,

@@ -49,7 +49,6 @@ fun SearchScreen(
             val languages = listOf("Kotlin", "Java", "Python", "JavaScript", "Swift", "Go")
 
             Column(modifier = Modifier.fillMaxSize()) {
-                // 搜索栏
                 MySearchBar(
                     query = state.query,
                     onQueryChange = viewModel::onQueryChange,
@@ -58,7 +57,6 @@ fun SearchScreen(
                         .padding(16.dp)
                 )
 
-                // 语言选择器
                 LazyRow(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -79,7 +77,6 @@ fun SearchScreen(
                     }
                 }
 
-                // 仓库列表
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -87,7 +84,11 @@ fun SearchScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(state.repositories.size) { repo ->
+                    items(
+                        count = state.repositories.size,
+                        key = { state.repositories[it].id },
+                        contentType = { "search-item" }
+                    ) { repo ->
                         RepositoryItem(state.repositories[repo])
                     }
 

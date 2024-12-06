@@ -20,7 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.android.github.utils.AuthPreferences
-import com.android.mygithub.ui.navigation.BottomNaviItem
+import com.android.mygithub.ui.navigation.NaviItem
 import com.android.mygithub.ui.navigation.NavigationGraph
 import com.android.mygithub.ui.theme.MyGitHubTheme
 import kotlinx.coroutines.CoroutineScope
@@ -42,9 +42,9 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         NavigationBar {
                             listOf(
-                                BottomNaviItem.Home,
-                                BottomNaviItem.Search,
-                                BottomNaviItem.Profile,
+                                NaviItem.Popular,
+                                NaviItem.Search,
+                                NaviItem.Profile,
                             ).forEach { bottomNaviItem ->
                                 NavigationBarItem(
                                     selected = bottomNaviItem.route == currentDestination?.route,

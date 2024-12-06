@@ -37,7 +37,7 @@ class GithubRepositoryImpl(
                 else -> append(" created:>${LocalDate.now().minusDays(1)}")
             }
         }
-        api.getPopularRepos(query).items.map { it.toDomain() }
+        api.searchRepositories(query).items.map { it.toDomain() }
     }
 
     override suspend fun searchRepositories(

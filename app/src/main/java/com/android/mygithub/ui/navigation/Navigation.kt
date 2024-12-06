@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.android.mygithub.ui.screen.MainScreen
+import com.android.mygithub.ui.screen.PopularScreen
 import com.android.mygithub.ui.screen.ProfileScreen
 import com.android.mygithub.ui.screen.RepositoriesScreen
 import com.android.mygithub.ui.screen.SearchScreen
@@ -17,23 +17,23 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomNaviItem.Home.route,
+        startDestination = NaviItem.Popular.route,
     ) {
-        composable(BottomNaviItem.Home.route) {
-            MainScreen(paddingValues)
+        composable(NaviItem.Popular.route) {
+            PopularScreen(paddingValues)
         }
 
-        composable(BottomNaviItem.Search.route) {
+        composable(NaviItem.Search.route) {
             SearchScreen(paddingValues)
         }
 
-        composable(BottomNaviItem.Profile.route) {
+        composable(NaviItem.Profile.route) {
             ProfileScreen(
                 paddingValues,
-                { navController.navigate(route = BottomNaviItem.Repositories.route) })
+                { navController.navigate(route = NaviItem.Repositories.route) })
         }
 
-        composable(BottomNaviItem.Repositories.route) {
+        composable(NaviItem.Repositories.route) {
             RepositoriesScreen(
                 onBackClick = { navController.popBackStack() }
             )
