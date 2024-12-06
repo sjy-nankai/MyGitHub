@@ -10,7 +10,7 @@
 2. Popular: The first page is the “Popular” page, which displays the most popular repositories.
 3. Search: The search page allows for finding repositories in various programming languages.
 
-> unimplemented feature: An authenticated user can raise issue to his/her repositories.
+> unimplemented feature: raise issue to repositories.
 
 ## UnitTest:
 
@@ -20,4 +20,9 @@
 
 ## Here are some screenshots:
 
-![login](screenshots/login-1.png)
+![login-1](screenshots/login-1.png)
+![login-2](screenshots/login-2.png)
+![popular](screenshots/popular.png)
+![search](screenshots/search.png)
+![profile-login](screenshots/profile-login.png)
+![profile-my-repos](screenshots/profile-my-repos.png)
