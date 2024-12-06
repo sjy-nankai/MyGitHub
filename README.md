@@ -9,6 +9,7 @@
    authentication status can survive even after relaunched.
 2. Popular: The first page is the “Popular” page, which displays the most popular repositories.
 3. Search: The search page allows for finding repositories in various programming languages.
+4. Network module: The network layer code uses clean architecture.
 
 > unimplemented feature: raise issue to repositories.
 
