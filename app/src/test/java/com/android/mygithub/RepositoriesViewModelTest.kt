@@ -4,10 +4,10 @@ import android.content.Context
 import com.android.github.domain.model.Repository
 import com.android.github.domain.usecase.GithubUseCase
 import com.android.github.utils.AuthPreferences
+import com.android.mygithub.data.RepositoriesUiState
 import com.android.mygithub.mock.mockErrorMessage
 import com.android.mygithub.mock.mockRepos
 import com.android.mygithub.mock.mockToken
-import com.android.mygithub.viewmodel.RepositoriesResult
 import com.android.mygithub.viewmodel.RepositoriesViewModel
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.testCoroutineScheduler
@@ -55,7 +55,7 @@ class RepositoriesViewModelTest : FunSpec({
     }
 
     test("initial state should be Loading") {
-        viewModel.repositories.value.shouldBeInstanceOf<RepositoriesResult.Loading>()
+        viewModel.uiState.value.shouldBeInstanceOf<RepositoriesUiState.Loading>()
     }
 
     test("loadRepositories should handle successful response").config(coroutineTestScope = true) {
@@ -67,8 +67,8 @@ class RepositoriesViewModelTest : FunSpec({
         viewModel.loadRepositories(context)
         testCoroutineScheduler.advanceUntilIdle()
 
-        val result = viewModel.repositories.value
-        result.shouldBeInstanceOf<RepositoriesResult.Success<List<Repository>>>()
+        val result = viewModel.uiState.value
+        result.shouldBeInstanceOf<RepositoriesUiState.Success<List<Repository>>>()
         result.data shouldBe mockRepos
     }
 
@@ -77,8 +77,8 @@ class RepositoriesViewModelTest : FunSpec({
         coEvery { useCase.getAuthenticatedUserRepos("") } returns Result.success(emptyList())
         viewModel.loadRepositories(context)
         testCoroutineScheduler.advanceUntilIdle()
-        val result = viewModel.repositories.value
-        result.shouldBeInstanceOf<RepositoriesResult.Success<List<Repository>>>()
+        val result = viewModel.uiState.value
+        result.shouldBeInstanceOf<RepositoriesUiState.Success<List<Repository>>>()
         result.data shouldBe emptyList()
     }
 
@@ -92,8 +92,8 @@ class RepositoriesViewModelTest : FunSpec({
         viewModel.loadRepositories(context)
         testCoroutineScheduler.advanceUntilIdle()
 
-        val result = viewModel.repositories.value
-        result.shouldBeInstanceOf<RepositoriesResult.Error>()
+        val result = viewModel.uiState.value
+        result.shouldBeInstanceOf<RepositoriesUiState.Error>()
     }
 
     test("loadRepositories should handle exception").config(coroutineTestScope = true) {
@@ -106,8 +106,8 @@ class RepositoriesViewModelTest : FunSpec({
         viewModel.loadRepositories(context)
         testCoroutineScheduler.advanceUntilIdle()
 
-        val result = viewModel.repositories.value
-        result.shouldBeInstanceOf<RepositoriesResult.Error>()
+        val result = viewModel.uiState.value
+        result.shouldBeInstanceOf<RepositoriesUiState.Error>()
         result.message shouldBe mockErrorMessage
     }
 })

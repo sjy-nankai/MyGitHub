@@ -18,15 +18,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.mygithub.data.RepositoriesUiState
 import com.android.mygithub.ui.component.RepositoryItem
-import com.android.mygithub.viewmodel.RepositoriesResult
 import com.android.mygithub.viewmodel.RepositoriesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +35,7 @@ fun RepositoriesScreen(
     onBackClick: () -> Unit,
     viewModel: RepositoriesViewModel = viewModel(),
 ) {
-    val repos by viewModel.repositories.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.loadRepositories(context)
@@ -52,8 +52,8 @@ fun RepositoriesScreen(
             )
         }
     ) { paddingValues ->
-        when (val reposState = repos) {
-            is RepositoriesResult.Loading -> {
+        when (val reposState = uiState) {
+            is RepositoriesUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -62,7 +62,7 @@ fun RepositoriesScreen(
                 }
             }
 
-            is RepositoriesResult.Success -> {
+            is RepositoriesUiState.Success -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -80,7 +80,7 @@ fun RepositoriesScreen(
                 }
             }
 
-            is RepositoriesResult.Error -> {
+            is RepositoriesUiState.Error -> {
                 Text(
                     text = "Error: ${reposState.message}",
                     color = MaterialTheme.colorScheme.error,

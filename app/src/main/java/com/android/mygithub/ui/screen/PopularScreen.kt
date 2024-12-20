@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.mygithub.data.RepositoriesUiState
 import com.android.mygithub.ui.component.MyTopBar
 import com.android.mygithub.ui.component.RepositoryItem
 import com.android.mygithub.viewmodel.PopularViewModel
@@ -66,18 +67,17 @@ fun PopularScreen(
                 .fillMaxSize()
                 .nestedScroll(refreshState.nestedScrollConnection),
         ) {
-            when {
-                uiState.isRefreshing -> {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(44.dp)
-                            .align(Alignment.Center)
-                            .testTag("loading-indicator")
-                    )
+            when(val reposState = uiState) {
+                is RepositoriesUiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
 
-                uiState.isError -> {
+                is RepositoriesUiState.Error -> {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,19 +90,19 @@ fun PopularScreen(
                     }
                 }
 
-                else -> {
+                is RepositoriesUiState.Success -> {
                     LazyColumn(
                         modifier = Modifier.padding(bottom = 80.dp),
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(
-                            count = uiState.data.size,
-                            key = { uiState.data[it].id },
+                            count = reposState.data.size,
+                            key = { reposState.data[it].id },
                             contentType = { "popular-item" },
                         ) {
                             RepositoryItem(
-                                uiState.data[it],
+                                reposState.data[it],
                                 modifier = Modifier.padding()
                             )
                         }

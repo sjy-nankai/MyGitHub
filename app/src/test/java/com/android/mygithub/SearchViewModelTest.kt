@@ -60,9 +60,9 @@ class SearchViewModelTest : FunSpec({
             )
         } returns Result.success(searchResult)
         viewModel.onQueryChange("test")
-        viewModel.state.value.repositories shouldBe emptyList()
+        viewModel.uiState.value.repositories shouldBe emptyList()
         testCoroutineScheduler.advanceUntilIdle()
-        with(viewModel.state.value) {
+        with(viewModel.uiState.value) {
             query shouldBe "test"
             repositories shouldBe searchResult.items
             currentPage shouldBe 1
@@ -91,7 +91,7 @@ class SearchViewModelTest : FunSpec({
         viewModel.onLanguageSelect("kotlin")
         testCoroutineScheduler.advanceUntilIdle()
 
-        with(viewModel.state.value) {
+        with(viewModel.uiState.value) {
             selectedLanguage shouldBe "kotlin"
             repositories shouldBe searchResult.items
             currentPage shouldBe 1
@@ -115,7 +115,7 @@ class SearchViewModelTest : FunSpec({
         viewModel.onQueryChange("test")
         testCoroutineScheduler.advanceUntilIdle()
 
-        with(viewModel.state.value) {
+        with(viewModel.uiState.value) {
             error shouldBe mockErrorMessage
             isLoading shouldBe false
             repositories shouldBe emptyList()

@@ -91,7 +91,6 @@ class MainActivity : ComponentActivity() {
                     val code = uri.getQueryParameter("code") ?: ""
                     scope.launch {
                         AuthPreferences.saveAccessCode(context, code)
-//                        AuthPreferences.code = code
                     }
                 }
             }

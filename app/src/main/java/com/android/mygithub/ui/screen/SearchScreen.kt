@@ -45,12 +45,12 @@ fun SearchScreen(
                 .padding(paddingValues = innerPadding)
                 .fillMaxSize(),
         ) {
-            val state by viewModel.state.collectAsState()
+            val uiState by viewModel.uiState.collectAsState()
             val languages = listOf("Kotlin", "Java", "Python", "JavaScript", "Swift", "Go")
 
             Column(modifier = Modifier.fillMaxSize()) {
                 MySearchBar(
-                    query = state.query,
+                    query = uiState.query,
                     onQueryChange = viewModel::onQueryChange,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -63,14 +63,14 @@ fun SearchScreen(
                 ) {
                     item {
                         FilterChip(
-                            selected = state.selectedLanguage == null,
+                            selected = uiState.selectedLanguage == null,
                             onClick = { viewModel.onLanguageSelect(null) },
                             label = { Text("All") }
                         )
                     }
                     items(languages.size) { language ->
                         FilterChip(
-                            selected = state.selectedLanguage == languages[language],
+                            selected = uiState.selectedLanguage == languages[language],
                             onClick = { viewModel.onLanguageSelect(languages[language]) },
                             label = { Text(languages[language]) }
                         )
@@ -85,14 +85,14 @@ fun SearchScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(
-                        count = state.repositories.size,
-                        key = { state.repositories[it].id },
+                        count = uiState.repositories.size,
+                        key = { uiState.repositories[it].id },
                         contentType = { "search-item" }
                     ) { repo ->
-                        RepositoryItem(state.repositories[repo])
+                        RepositoryItem(uiState.repositories[repo])
                     }
 
-                    if (state.isLoading) {
+                    if (uiState.isLoading) {
                         item {
                             CircularProgressIndicator(
                                 modifier = Modifier
@@ -103,7 +103,7 @@ fun SearchScreen(
                     }
                 }
 
-                state.error?.let { error ->
+                uiState.error?.let { error ->
                     Text(
                         text = error,
                         color = MaterialTheme.colorScheme.error,

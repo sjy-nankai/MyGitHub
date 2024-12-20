@@ -7,6 +7,7 @@ import com.android.github.data.remote.di.ApiModule
 import com.android.github.domain.model.Repository
 import com.android.github.domain.usecase.GithubUseCase
 import com.android.github.utils.AuthPreferences
+import com.android.mygithub.data.RepositoriesUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,26 +19,18 @@ class RepositoriesViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
-    private val _repositories =
-        MutableStateFlow<RepositoriesResult<List<Repository>>>(RepositoriesResult.Loading)
-    val repositories = _repositories.asStateFlow()
+    private val _uiState =
+        MutableStateFlow<RepositoriesUiState<List<Repository>>>(RepositoriesUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     fun loadRepositories(context: Context) {
         viewModelScope.launch(dispatcher) {
             val token = AuthPreferences.getAccessToken(context) ?: ""
-            try {
-                useCase.getAuthenticatedUserRepos(token).onSuccess { repos ->
-                    _repositories.value = RepositoriesResult.Success(repos)
-                }
-            } catch (e: Exception) {
-                _repositories.value = RepositoriesResult.Error(e.message ?: "Unknown error")
+            useCase.getAuthenticatedUserRepos(token).onSuccess { repos ->
+                _uiState.value = RepositoriesUiState.Success(repos)
+            }.onFailure { e ->
+                _uiState.value = RepositoriesUiState.Error(e.message ?: "Unknown error")
             }
         }
     }
-}
-
-sealed class RepositoriesResult<out T> {
-    data object Loading : RepositoriesResult<Nothing>()
-    data class Success<T>(val data: T) : RepositoriesResult<T>()
-    data class Error(val message: String) : RepositoriesResult<Nothing>()
 }

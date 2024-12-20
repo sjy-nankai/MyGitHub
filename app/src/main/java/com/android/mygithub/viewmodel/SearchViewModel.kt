@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class SearchState(
+data class SearchUiState(
     val query: String = "",
     val selectedLanguage: String? = "default",
     val isLoading: Boolean = false,
@@ -30,8 +30,8 @@ class SearchViewModel(
     private val useCase: GithubUseCase = GithubUseCase(repository = ApiModule.repository),
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(SearchState())
-    val state: StateFlow<SearchState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(SearchUiState())
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
     private var searchJob: Job? = null
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
@@ -39,25 +39,25 @@ class SearchViewModel(
     }
 
     fun onQueryChange(query: String) {
-        _state.value = _state.value.copy(query = query)
+        _uiState.value = _uiState.value.copy(query = query)
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(300) // 防抖
+            delay(300)
             search(resetPage = true)
         }
     }
 
     fun onLanguageSelect(language: String?) {
-        _state.value = _state.value.copy(selectedLanguage = language)
+        _uiState.value = _uiState.value.copy(selectedLanguage = language)
         search(resetPage = true)
     }
 
     private fun search(resetPage: Boolean) {
         viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
-            val currentState = _state.value
+            val currentState = _uiState.value
             val page = if (resetPage) 1 else currentState.currentPage + 1
 
-            _state.value = currentState.copy(
+            _uiState.value = currentState.copy(
                 isLoading = true,
                 error = null
             )
@@ -67,14 +67,14 @@ class SearchViewModel(
                 query = currentState.query,
                 page = page
             ).onSuccess { result ->
-                _state.value = currentState.copy(
+                _uiState.value = currentState.copy(
                     repositories = if (resetPage) result.items else currentState.repositories + result.items,
                     currentPage = page,
                     hasNextPage = result.hasNextPage,
                     isLoading = false
                 )
             }.onFailure { error ->
-                _state.value = currentState.copy(
+                _uiState.value = currentState.copy(
                     error = error.message,
                     isLoading = false
                 )
